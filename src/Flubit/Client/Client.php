@@ -435,7 +435,7 @@ EOH;
                     array()
                     );
             
-            if ($statusCode === 401) {
+            if (in_array($statusCode, array(401,403))) {
 
                 throw new UnauthorizedException(is_object($xml) ? $xml->asXML() : json_encode($xml, JSON_PRETTY_PRINT), $statusCode);
             } else {
