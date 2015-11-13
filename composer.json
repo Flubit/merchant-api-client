@@ -13,6 +13,9 @@
         "phpspec/phpspec": "2.2.*@dev",
         "fabpot/php-cs-fixer": "2.0.*@dev"
     },
+    "config": {
+        "bin-dir": "bin"
+    },
     "autoload": {
         "psr-0": {
             "Flubit": "src/"
