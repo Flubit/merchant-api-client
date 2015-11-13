@@ -25,6 +25,11 @@ class ApiClient
 
     private $version = 1;
 
+    private static $allowedFormats = array(
+       'xml' => 'application/xml',
+       'json' => 'application/json',
+       'csv' => 'text/csv'
+    );
 
     public function __construct(HttpClient $client, array $config)
     {
@@ -69,8 +74,6 @@ class ApiClient
         return $this->call($request);
     }
 
-
-
     /**
      * @param string $endpoint
      * @param string $body
@@ -81,8 +84,10 @@ class ApiClient
     {
         $token = $this->generateAuthToken();
         $request = $this->client->createRequest('POST', $this->buildUrl($endpoint, $params),
-                                    ['headers' => ['auth-token' => $token]
-                                    ]);
+            ['headers' => ['auth-token' => $token,
+                           'Content-Type' => self::$allowedFormats[$this->format]
+                          ]
+            ]);
         $bodyStream = Stream::factory($body);
         $request->setBody($bodyStream);
         return $this->call($request);
@@ -130,7 +135,11 @@ class ApiClient
 
     private function buildUrl($endpoint, array $params = [])
     {
-        return sprintf('%s%s.%s?%s', $this->baseUrl, $endpoint, $this->format, http_build_query($params));
+        $format = $this->format;
+        if ($this->format == 'csv') {
+            $format = 'json';
+        }
+        return sprintf('%s%s.%s?%s', $this->baseUrl, $endpoint, $format, http_build_query($params));
     }
 
     private function generateAuthToken()
@@ -154,5 +163,10 @@ class ApiClient
             $nonce,
             $time
         );
+    }
+
+    public function setFormat($format)
+    {
+        $this->format = $format;
     }
 }

@@ -60,10 +60,11 @@ var_dump($response);
 
        $product_feed = 'sku,title,is_active,base_price,stock,description,image1,mpn,brand,category,standard_delivery_cost,tax_rate,extended[colour],extended[size],extended[country_of_origin]
 "60138","SanDisk 4GB Clip Zip","1","22.62","4","","http://placeholder.it/image/60138.jpg","111383+100350","SanDisk","Flash Memory","0","20","blue","1.90","Jamaica"' ;
-
+$flubitClient->setRequestFormat('csv');
 $response = $flubitClient->addProductFeed($product_feed);
 var_dump($response);
 
+$flubitClient->setRequestFormat('json');
 $feedId = $flubitClient->updateProductFeed($product_feed);
 
 $response = $flubitClient->getProductFeedStatus($feedId);

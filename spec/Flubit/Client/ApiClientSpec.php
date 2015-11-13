@@ -83,4 +83,9 @@ class ApiClientSpec extends ObjectBehavior
         $this->beConstructedWith($client, $this->getDefaultConfigArray());
         $this->shouldThrow('Flubit\NotFoundException')->during('get', ['account/ss']);
     }
+
+    public function it_can_accept_a_request_format_after_construct()
+    {
+        $this->setFormat('csv');
+    }
 }

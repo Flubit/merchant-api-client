@@ -133,4 +133,13 @@ class FlubitApi
         }
         return false;
     }
+
+    /**
+     * @param string $format
+     * @return null
+     */
+    public function setRequestFormat($format)
+    {
+        $this->apiClient->setFormat($format);
+    }
 }

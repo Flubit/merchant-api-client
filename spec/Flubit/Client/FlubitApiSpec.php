@@ -149,8 +149,10 @@ class FlubitApiSpec extends ObjectBehavior
         $response = new response(202, [], Stream::factory('{"id":"8f173289c78b3020a0b338ced995bd55"}'));
 
         $apiClient->post('products/feed', $product_feed, [])->willReturn($response);
+        $apiClient->setFormat('csv')->willReturn(null);
 
         $this->beConstructedWith($apiClient);
+        $this->setRequestFormat('csv');
         $this->updateProductFeed($product_feed)->shouldReturn('8f173289c78b3020a0b338ced995bd55');
     }
 
