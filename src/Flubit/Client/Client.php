@@ -70,6 +70,7 @@ class Client implements ClientInterface
     <courier>%s</courier>
     <consignment_number>%s</consignment_number>
     <tracking_url>%s</tracking_url>
+    <merchant_order_id>%s</merchant_order_id>
 </dispatch>
 EOH;
 
@@ -81,7 +82,8 @@ EOH;
     "dispatched_at" : "%s",
     "courier" : "%s",
     "consignment_number" : "%s",
-    "tracking_url" : "%s"
+    "tracking_url" : "%s",
+    "merchant_order_id" : "%s"
 }
 EOH;
 
@@ -92,6 +94,7 @@ EOH;
 <?xml version="1.0" encoding="UTF-8"?>
 <cancel>
     <reason>%s</reason>
+    <merchant_order_id>%s</merchant_order_id>
 </cancel>
 EOH;
 
@@ -100,7 +103,8 @@ EOH;
      */
     const JSON_CANCEL_PAYLOAD = <<<EOH
 {
-    "reason" : "%s"
+    "reason" : "%s",
+    "merchant_order_id" : "%s"
 }
 EOH;
 
@@ -112,6 +116,7 @@ EOH;
 <refund>
     <reason>%s</reason>
     <amount>%s</amount>
+    <merchant_order_id>%s</merchant_order_id>
 </refund>
 EOH;
 
@@ -121,7 +126,8 @@ EOH;
     const JSON_REFUND_PAYLOAD = <<<EOH
 {
     "reason" : "%s",
-    "amount" : %s
+    "amount" : %s,
+    "merchant_order_id" : "%s"
 }
 EOH;
 
@@ -239,9 +245,9 @@ EOH;
     /**
      * {@inheritdoc}
      */
-    public function cancelOrderByFlubitId($id, $reason)
+    public function cancelOrderByFlubitId($id, $reason, $merchantOrderId = null)
     {
-        $payload = $this->generateCancelOrderPayload($reason);
+        $payload = $this->generateCancelOrderPayload($reason, (string) $merchantOrderId);
 
         $request = $this->getPostRequest(
             sprintf('orders/cancel.%s', $this->responseFormat),
@@ -259,7 +265,7 @@ EOH;
      */
     public function cancelOrderByMerchantOrderId($id, $reason)
     {
-        $payload = $this->generateCancelOrderPayload($reason);
+        $payload = $this->generateCancelOrderPayload($reason, $id);
 
         $request = $this->getPostRequest(
             sprintf('orders/cancel.%s', $this->responseFormat),
@@ -275,9 +281,9 @@ EOH;
     /**
      * {@inheritdoc}
      */
-    public function refundOrderByFlubitId($id, $reason, $amount)
+    public function refundOrderByFlubitId($id, $reason, $amount, $merchantOrderId = null)
     {
-        $payload = $this->generateRefundOrderPayload($reason, $amount);
+        $payload = $this->generateRefundOrderPayload($reason, $amount, (string) $merchantOrderId);
 
         $request = $this->getPostRequest(
             sprintf('orders/refund.%s', $this->responseFormat),
@@ -295,7 +301,7 @@ EOH;
      */
     public function refundOrderByMerchantOrderId($id, $reason, $amount)
     {
-        $payload = $this->generateRefundOrderPayload($reason, $amount);
+        $payload = $this->generateRefundOrderPayload($reason, $amount, $id);
 
         $request = $this->getPostRequest(
             sprintf('orders/refund.%s', $this->responseFormat),
@@ -461,6 +467,7 @@ EOH;
         $courier = isset($params['courier']) ? $params['courier'] : '';
         $consignmentNumber = isset($params['consignment_number']) ? $params['consignment_number'] : '';
         $trackingUrl = isset($params['tracking_url']) ? $params['tracking_url'] : '';
+        $merchantOrderId = isset($params['merchant_order_id']) ? $params['merchant_order_id'] : '';
         $payLoad = null;
 
         if ('xml' == $this->requestFormat) {
@@ -468,31 +475,31 @@ EOH;
             $payLoad = sprintf(
                         self::XML_DISPATCH_PAYLOAD,
                         $dateTime->format($this->timestampFormat),
-                        $courier, $consignmentNumber, $trackingUrl
+                        $courier, $consignmentNumber, $trackingUrl, $merchantOrderId
                         );
         } else {
             $payLoad = sprintf(
                         self::JSON_DISPATCH_PAYLOAD,
                         $dateTime->format($this->timestampFormat),
-                        $courier, $consignmentNumber, $trackingUrl
+                        $courier, $consignmentNumber, $trackingUrl, $merchantOrderId
                         );
         }
 
         return $payLoad;
     }
 
-    private function generateCancelOrderPayload($reason)
+    private function generateCancelOrderPayload($reason, $merchantOrderId)
     {
         return ('xml' == $this->requestFormat) ?
-                sprintf(self::XML_CANCEL_PAYLOAD, $reason) :
-                sprintf(self::JSON_CANCEL_PAYLOAD, $reason);
+                sprintf(self::XML_CANCEL_PAYLOAD, $reason, $merchantOrderId) :
+                sprintf(self::JSON_CANCEL_PAYLOAD, $reason, $merchantOrderId);
     }
 
-    private function generateRefundOrderPayload($reason, $amount)
+    private function generateRefundOrderPayload($reason, $amount, $merchantOrderId)
     {
         return ('xml' == $this->requestFormat) ?
-                sprintf(self::XML_REFUND_PAYLOAD, $reason, $amount) :
-                sprintf(self::JSON_REFUND_PAYLOAD, $reason, $amount);
+                sprintf(self::XML_REFUND_PAYLOAD, $reason, $amount, $merchantOrderId) :
+                sprintf(self::JSON_REFUND_PAYLOAD, $reason, $amount, $merchantOrderId);
     }
 
     private function call(RequestInterface $request)
