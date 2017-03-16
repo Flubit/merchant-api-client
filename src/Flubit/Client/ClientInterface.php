@@ -126,10 +126,11 @@ interface ClientInterface
 
     /**
      * @param $productData
+     * @param string(create|update|replace) $type
      *
      * @return \SimpleXMLElement|array
      */
-    public function createProducts($productData);
+    public function createProducts($productData, $type = null);
     
     /**
      * 
@@ -149,8 +150,9 @@ interface ClientInterface
     /**
      * 
      * @param $productData
+     * @param string(create|update|replace) $type
      * 
      * @return \SimpleXMLElement|array
      */
-    public function updateSingleProduct($productData);
+    public function updateSingleProduct($productData, $type = null);
 }

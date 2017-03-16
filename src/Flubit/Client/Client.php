@@ -403,14 +403,16 @@ EOH;
     /**
      * {@inheritdoc}
      */
-    public function createProducts($productData)
+    public function createProducts($productData, $type = null)
     {
+        $type = $type ? $type : 'create';
+
         $request = $this->getPostRequest(
             sprintf('products/feed.%s',$this->responseFormat),
             $productData,
-            array(
-                'type' => 'create'
-            )
+            [
+                'type' => $type
+            ]
         );
 
         return $this->call($request);
@@ -432,11 +434,16 @@ EOH;
     /**
      * {@inheritdoc}
      */
-    public function updateProducts($productData)
+    public function updateProducts($productData, $type = null)
     {
+        $type = $type ? $type : 'update';
+
         $request = $this->getPostRequest(
             sprintf('products/feed.%s',$this->responseFormat),
-            $productData
+            $productData,
+            [
+                'type' => $type
+            ]
         );
 
         return $this->call($request);
