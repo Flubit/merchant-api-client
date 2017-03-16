@@ -142,17 +142,17 @@ interface ClientInterface
 
     /**
      * @param $productData
+     * @param string(create|update|replace) $type
      *
      * @return \SimpleXMLElement|array
      */
-    public function updateProducts($productData);
+    public function updateProducts($productData, $type = null);
     
     /**
      * 
      * @param $productData
-     * @param string(create|update|replace) $type
      * 
      * @return \SimpleXMLElement|array
      */
-    public function updateSingleProduct($productData, $type = null);
+    public function updateSingleProduct($productData);
 }

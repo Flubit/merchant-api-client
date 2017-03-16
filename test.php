@@ -43,7 +43,7 @@ EOH;
 
 try {
 
-    $xml = $client->createProducts($productXml);
+    $xml = $client->createProducts($productXml, null);
     $feedId = (string) $xml;
     printf("Feed %s created\n", $feedId);
 
@@ -64,7 +64,7 @@ EOH;
 try {
 
     $xml = $client->setRequestFormat('csv')
-            ->createProducts($productXml);
+            ->createProducts($productXml, null);
     $feedId = (string) $xml;
     printf("Feed %s created\n", $feedId);
 
