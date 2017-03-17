@@ -131,6 +131,13 @@ interface ClientInterface
      * @return \SimpleXMLElement|array
      */
     public function createProducts($productData);
+
+    /**
+     * @param $productData
+     *
+     * @return \SimpleXMLElement|array
+     */
+    public function replaceProducts($productData);
     
     /**
      * 
