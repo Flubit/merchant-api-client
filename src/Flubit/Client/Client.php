@@ -428,9 +428,9 @@ EOH;
         $request = $this->getPostRequest(
             sprintf('products/feed.%s',$this->responseFormat),
             $productData,
-            array(
+            [
                 'type' => 'replace'
-            )
+            ]
         );
 
         return $this->call($request);
