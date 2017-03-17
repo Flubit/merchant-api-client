@@ -423,6 +423,22 @@ EOH;
     /**
      * {@inheritdoc}
      */
+    public function replaceProducts($productData)
+    {
+        $request = $this->getPostRequest(
+            sprintf('products/feed.%s',$this->responseFormat),
+            $productData,
+            [
+                'type' => 'replace'
+            ]
+        );
+
+        return $this->call($request);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function createSingleProduct($productData)
     {
         $request = $this->getPostRequest(
