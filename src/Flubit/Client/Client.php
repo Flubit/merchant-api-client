@@ -352,11 +352,15 @@ EOH;
         return $this->call($request);
     }
 
-    public function getProducts($isActive, $limit, $page, $sku = null)
+    public function getProducts($isActive, $limit, $page, $sku = null, $stock = null)
     {
         $url = sprintf('/1/products/filter.%s', $this->responseFormat);
 
         $params = array();
+
+        if ($stock) {
+            $params['stock'] = $stock;
+        }
 
         if (isset($isActive)) {
             $params['is_active'] = $isActive;
@@ -417,6 +421,22 @@ EOH;
             array(
                 'type' => 'create'
             )
+        );
+
+        return $this->call($request);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function replaceProducts($productData)
+    {
+        $request = $this->getPostRequest(
+            sprintf('products/feed.%s',$this->responseFormat),
+            $productData,
+            [
+                'type' => 'replace'
+            ]
         );
 
         return $this->call($request);

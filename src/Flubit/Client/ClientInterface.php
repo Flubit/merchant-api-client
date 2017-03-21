@@ -102,10 +102,11 @@ interface ClientInterface
      * @param        $limit
      * @param        $page
      * @param null   $sku
+     * @param string $stock
      *
      * @return \SimpleXMLElement|array
      */
-    public function getProducts($isActive, $limit, $page, $sku = null);
+    public function getProducts($isActive, $limit, $page, $sku = null, $stock = null);
 
     /**
      * @param string $feedID
@@ -130,6 +131,13 @@ interface ClientInterface
      * @return \SimpleXMLElement|array
      */
     public function createProducts($productData);
+
+    /**
+     * @param $productData
+     *
+     * @return \SimpleXMLElement|array
+     */
+    public function replaceProducts($productData);
     
     /**
      * 
