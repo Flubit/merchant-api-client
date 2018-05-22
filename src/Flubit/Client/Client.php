@@ -317,6 +317,21 @@ EOH;
     /**
      * {@inheritdoc}
      */
+    public function getOrdersByIds($idsData)
+    {
+        $url = sprintf('orders/filter.%s', $this->responseFormat);
+
+        $request = $this->getPostRequest(
+            $url,
+            $idsData
+        );
+
+        return $this->call($request);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getOrders($status, \DateTime $from = null, $page = 1, $limit = 100)
     {
         $params = array();
@@ -342,7 +357,7 @@ EOH;
 
     public function getProductsBySkus($skusData)
     {
-        $url = sprintf('/1/products/filter.%s', $this->responseFormat);
+        $url = sprintf('products/filter.%s', $this->responseFormat);
 
         $request = $this->getPostRequest(
             $url,
@@ -354,7 +369,7 @@ EOH;
 
     public function getProducts($isActive, $limit, $page, $sku = null, $stock = null)
     {
-        $url = sprintf('/1/products/filter.%s', $this->responseFormat);
+        $url = sprintf('products/filter.%s', $this->responseFormat);
 
         $params = array();
 
