@@ -317,13 +317,10 @@ EOH;
     /**
      * {@inheritdoc}
      */
-    public function getOrdersByIds($idsData)
+    public function getOrder($id)
     {
-        $url = sprintf('orders/filter.%s', $this->responseFormat);
-
-        $request = $this->getPostRequest(
-            $url,
-            $idsData
+        $request = $this->getGetRequest(
+            sprintf('orders/%d.%s', $id, $this->responseFormat)
         );
 
         return $this->call($request);
