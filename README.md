@@ -1,7 +1,7 @@
-Weflubit API Client
+Sellers SKUCloud API Client
 ===================
 
-This library can be used to call the WeFlubit API. See the [API documentation] (http://dev.weflubit.com).
+This library can be used to call the Sellers SKUCloud API. See the [API documentation] (https://seller-docs.skucloud.io).
 
 ## Setup
 
